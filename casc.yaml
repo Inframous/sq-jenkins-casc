@@ -1,0 +1,283 @@
+jenkins:
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "admin"
+        - id: "dev"
+          password: "dev"
+  # authorizationStrategy: loggedInUsersCanDoAnything
+  authorizationStrategy:
+    globalMatrix:
+      permissions:
+        - "Job/Build:dev"
+        - "Job/Cancel:dev"
+        - "Job/Read:dev"
+        - "Job/Workspace:dev"
+        - "Overall/Administer:admin"
+        - "Overall/Read:authenticated"
+        - "Run/Replay:dev"
+        - "Run/Update:dev"
+  numExecutors: 1
+
+# Setting up Agent 
+  nodes:
+    - permanent:
+        labelString: "J_Agent"
+        mode: NORMAL
+        name: "J_Agent"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/jenkins_agent"
+        launcher:
+          SSHLauncher:
+            host: '<j_agent_ip>'
+            port: 22
+            credentialsId: ssh-Jenkins-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+
+# Set up credentials
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - basicSSHUserPrivateKey:
+              scope: GLOBAL
+              id: "ssh-Jenkins-Controller"
+              username: ubuntu
+              description: "SSH passphrase with private key file. Private key provided"
+              privateKeySource:
+                directEntry:
+                  privateKey: "${readFile:${SSH_PRIVATE_FILE_PATH}}"
+          - basicSSHUserPrivateKey:
+              scope: GLOBAL
+              id: "ssh-GitHub"
+              username: Inframous
+              description: "SSH Private Key for Git (Same one)"
+              privateKeySource:
+                directEntry:
+                  privateKey: "${readFile:${SSH_PRIVATE_FILE_PATH}}"
+          - aws:
+              scope: GLOBAL
+              id: "aws-Jenkins-Controller"
+              accessKey: "${AWS_ACCESS_KEY}"
+              secretKey: "${AWS_SECRET_ACCESS_KEY}"
+              description: "AWS Credentials"
+jobs:
+  - script: |
+      pipelineJob('AWS-Test') {
+        definition {
+          cps {
+            script('''
+              pipeline {
+                agent { label "J_Agent" }
+                environment {
+                    SSH_CREDENTIALS = "ssh-Jenkins-Controller"
+                    AWS_CREDENTIALS = "aws-Jenkins-Controller"
+                    AWS_BUCKET_NAME = "sq-proj1-bucket"
+
+                    SERVER_USERNAME = "ubuntu"
+                    TRIGGER_DEPLOY_JOB_NAME = "AWS-Deploy"
+
+                    GIT_SSH_CREDENTIALS = 'ssh-GitHub'
+                    GIT_REPO_URL_HTTPS = "https://github.com/Inframous/project_1.git"
+                    GIT_REPO_URL_SSH = "git@github.com:Inframous/project_1.git"
+                }
+                stages {
+                    // Cloning the repo, this also connects the job with GitHub's WebHook
+                    stage('Checkout SCM'){
+                        steps {
+                            checkout([
+                                $class: 'GitSCM',
+                                branches: [[name: 'main']],
+                                userRemoteConfigs : [[
+                                    url: "${GIT_REPO_URL_SSH}",
+                                    credentialsId: "${GIT_SSH_CREDENTIALS}"
+                                    ]]
+                                ])
+                        }
+                    }
+                    stage('build'){
+                        // Building the app's image
+                        steps{
+                            sh """
+                            sudo docker build -t my-app .
+                            """
+                            }
+                        }
+                    stage('test'){
+                        // Launching a container and running a test.
+                        steps{
+                            script {
+                                def result = sh(script: 'sudo docker run --rm -p 5000:5000 my-app /bin/sh -c "python -m unittest discover"', returnStatus: true)
+                                if (result == 0) {
+                                env.RESULT = "SUCCESS"
+                                    }
+                                else {
+                                    env.RESULT = "FAIL"
+                                    }
+                                }
+                            }
+                        }
+                    stage('Logging') {
+                        steps {
+                            script {
+                                // Setting up a variable with the current date and time.
+                            def now = new Date().format("dd/MM/yy-HH:mm", TimeZone.getTimeZone('UTC'))
+                                env.NOW = now
+
+                                // Trying to download report.csv from the bucket
+                            def report_file = sh(script: "wget https://${AWS_BUCKET_NAME}.s3.eu-central-1.amazonaws.com/report.csv", returnStatus: true)
+                                // If this is the first run, the CSV file won't be there, so we'll create it.
+                            if (report_file != 0) {
+                            wrap([$class: 'BuildUser']) {
+                            sh 'echo "user_name,date,test_result" > report.csv'
+                                }
+                            }
+                                // Adding the current build's info to the file (Using the 'build user vars plugin')
+                            wrap([$class: 'BuildUser']) {
+                            sh 'echo "$BUILD_USER","$NOW","$RESULT" >> report.csv'
+                                }
+                            }
+                        }
+                    }
+                    stage('Upload to AWS') {
+                        steps { // Uploading the file to the S3 bucket
+                            withAWS(region: 'eu-central-1', credentials: "${AWS_CREDENTIALS}") {
+                            sh 'echo "Uploading content with AWS creds"'
+                                s3Upload(pathStyleAccessEnabled: true, payloadSigningEnabled: true, file:'report.csv', bucket: "${AWS_BUCKET_NAME}")
+                            }
+                            // Making sure that the file's acl is set to public
+                            withAWS(region: 'eu-central-1', credentials: "${AWS_CREDENTIALS}") {
+                            sh "aws s3api put-object-acl --bucket  ${AWS_BUCKET_NAME} --key 'report.csv' --acl public-read"
+                            }
+
+
+                        }
+                    }
+                    stage('Deploy') {
+                        // If all went well (with the tests) run the next (Deploy) job.
+                        when {
+                            expression {
+                                env.RESULT == 'SUCCESS' 
+                            }
+                        }
+                        steps {
+                            build job: "${TRIGGER_DEPLOY_JOB_NAME}", wait: false
+                        }
+                    }
+                }
+            }'''.stripIndent())
+          }
+        }
+      }
+  - script: |
+      pipelineJob('AWS-Deploy') {
+        definition {
+          cps {
+            script('''\
+              PROD_IPS = ["10.123.1.12", "10.123.1.13"] // <<--- Input Prod1 & Prod2 aws-private-ip-address.
+              pipeline {
+                  agent { label 'J_Agent' }
+                  environment {
+                      KEY = 'BOTH' // <<--- Set ONE, TWO or BOTH to decide to which production server you'd like to deploy.
+
+                      SSH_CREDENTIALS = 'ssh-Jenkins-Controller' // << ssh credentials to connect to Prod1,Prod2 EC2
+                      
+                      AWS_CREDENTIALS = 'aws-Jenkins-Controller' // << aws credentials
+                      AWS_REGION = "eu-central-1" 
+                      AWS_BUCKET_NAME = "sq-proj1-bucket"
+                      
+                      SERVER_USERNAME = "ubuntu"
+                      
+                      GIT_SSH_CREDENTIALS = 'ssh-GitHub' // <<--- Git SSH Credentials.
+                      GIT_REPO_URL_HTTPS = "https://github.com/Inframous/project_1.git" 
+                      GIT_REPO_URL_SSH = "git@github.com:Inframous/project_1.git"
+                  }
+                  stages {
+                      stage('Deploy to servers') {
+                          steps {
+                              // creating a list of cases
+                              script {
+                                  def prod_ips = []
+                                  switch (KEY) {
+                                      case "ONE":
+                                          prod_ips = [PROD_IPS[0]]
+                                          break
+                                      case "TWO":
+                                          prod_ips = [PROD_IPS[1]]
+                                          break
+                                      default:
+                                          prod_ips = PROD_IPS
+                                          break
+                                  }
+                                  
+                                  // In whichever is the selected case (number of machines to deploy to) Run the following :
+
+                                  prod_ips.each { ip ->
+                                      // Stopping & deleteing the running container, and removing its image incase this isn't the first run.
+                                      try { 
+                                          sshagent(credentials: ["${SSH_CREDENTIALS}"]) {
+                                              sh """
+                                                  ssh "${SERVER_USERNAME}"@"${ip}" '
+                                                  sudo docker stop my-app-deployed
+                                                  sudo docker rm -f my-app-deployed
+                                                  sudo docker image rm my-app
+                                                  ' 
+                                              """
+                                          }
+                                      } catch (err) { // Just incase it is the first run, catching the error or any others that might happen.
+                                          echo "There might have been an error stopping/removing the container/image on ${ip}..."
+                                      } finally {
+                                          echo "Done with cleanup, deploying app..."
+                                      }
+                                      // Building and deploying the app in the Production Server.
+                                      sshagent(credentials: ["${SSH_CREDENTIALS}"]) {
+                                          sh """
+                                              ssh "${SERVER_USERNAME}"@"${ip}" 'git clone "${GIT_REPO_URL_HTTPS}"
+                                              cd project_1 && sudo docker build -t my-app .
+                                              sudo docker run -d -p 5000:5000 --restart always --name my-app-deployed my-app'
+                                          """
+                                      }
+                                  }
+                              }
+                          }
+                      }
+                      stage('Add item to DynamoDB') {
+                          // Adding the test results of the previous job to the DynamoDB created:
+                          // Downloading the csv from the bucket,
+                          // extracting and parsing the latest resulst, 
+                          // uploading the parsed data to an item within the DynamoDB table,
+                          // deleting the csv file.
+                          steps {
+                              withAWS(credentials: 'aws-Jenkins-Controller', region: 'eu-central-1') {
+                                  sh """
+                                      wget https://"${AWS_BUCKET_NAME}".s3.eu-central-1.amazonaws.com/report.csv
+                                      input=\$(tail -n 1 report.csv) 
+                                      TestId="\$((\$(wc report.csv -l | awk '{ print \$1 }') + 1))"
+                                      TestUser="\$(echo \$input | cut -d ',' -f1 | sed 's/ /-/g')"
+                                      TestDate="\$(echo \$input | cut -d ',' -f2 )"
+                                      TestResult="\$(echo \$input | cut -d ',' -f3 )"
+
+                                      echo \$TestID \$TestUser \$TestDate \$TestResults
+
+                                      aws dynamodb put-item \
+                                      --table-name TestTable \
+                                      --item \
+                                      '{"TestId": {"S": "'\$TestId'"}, "TestDate": {"S": "'\$TestDate'"}, "TestResult": {"S": "'\$TestResult'"}, "TestUser": {"S": "'\$TestUser'"}}' \
+                                      --return-consumed-capacity TOTAL
+                                      rm report.csv
+                                  """
+                              }
+                          }
+                      }
+                  }
+              }'''.stripIndent())
+          }
+        }
+      }
