@@ -28,7 +28,7 @@ jenkins:
         mode: NORMAL
         name: "Prod1"
         numExecutors: 1
-        remoteFS: "/home/ubuntu/jenkins_agent"
+        remoteFS: "/home/ubuntu/jenkins_agent1"
         launcher:
           SSHLauncher:
             host: '<prod1_ip>'
@@ -45,7 +45,7 @@ jenkins:
         mode: NORMAL
         name: "Prod2"
         numExecutors: 1
-        remoteFS: "/home/ubuntu/jenkins_agent"
+        remoteFS: "/home/ubuntu/jenkins_agent2"
         launcher:
           SSHLauncher:
             host: '<prod2_ip>'
@@ -86,57 +86,6 @@ credentials:
               secretKey: "${AWS_SECRET_ACCESS_KEY}"
               description: "AWS Credentials"
 jobs:
-  - script: >
-        pipeline {
-          agent any
-
-          stages {
-            stage('Download pipeline files') {
-              steps {
-                // Define GitHub credentials
-                def githubCredentials = credentials('ssh-GitHub')
-
-                // Define GitHub repository URL and branch
-                def githubRepoUrl = 'git@github.com:Inframous/project_1.git'
-                def githubRepoBranch = 'main'
-
-                // Define pipeline file paths
-                def pipelineFile1Path = 'infrastructure/pipeline/aws-test-done'
-                def pipelineFile2Path = 'infrastructure/pipeline/aws-deploy-done'
-
-                // Define job names
-                def job1Name = 'AWS-Test'
-                def job2Name = 'AWS-Deploy'
-
-                // Define DSL job builders for each pipeline file
-                def job1Builder = new DslScriptLoader().loadScript(pipelineFile1Path).with{ it ->
-                  it.setVariable('jobName', job1Name)
-                  it
-                }
-
-                def job2Builder = new DslScriptLoader().loadScript(pipelineFile2Path).with{ it ->
-                  it.setVariable('jobName', job2Name)
-                  it
-                }
-
-                // Clone GitHub repository
-                git url: githubRepoUrl, credentialsId: githubCredentials.id, branch: githubRepoBranch
-
-                // Load DSL job builders from pipeline files
-                job1Builder = job1Builder.fromGithub(githubRepoUrl, githubRepoBranch, githubCredentials)
-                job2Builder = job2Builder.fromGithub(githubRepoUrl, githubRepoBranch, githubCredentials)
-
-              }
-            }
-
-            stage('Create jobs') {
-              steps {
-                // Create Job 1
-                jobDsl scriptText: job1Builder.generate()
-
-                // Create Job 2
-                jobDsl scriptText: job2Builder.generate()
-              }
-            }
-          }
-        }
+  - file: /var/jenkins_home/aws-test.groovy
+  - file: /var/jenkins_home/aws-deploy.groovy
+  
