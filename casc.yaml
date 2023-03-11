@@ -62,7 +62,7 @@ jenkins:
 
 unclassified:
   location:
-    adminAddress: "mail.gabriel.pollak@gmail.com"
+    adminAddress: "EMAIL_ADDRESS"
     url: "CONTROLLER_IP"
 ## End block
 
