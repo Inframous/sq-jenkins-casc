@@ -61,7 +61,6 @@ ant:latest
 javax-mail-api:latest
 jackson2-api:latest
 cloudbees-folder:latest
-cloudbees-credentials:latest
 workflow-durable-task-step:latest
 branch-api:latest
 aws-java-sdk:latest
@@ -107,3 +106,4 @@ workflow-job:latest
 email-ext:latest
 configuration-as-code:latest
 authorize-project:latest
+

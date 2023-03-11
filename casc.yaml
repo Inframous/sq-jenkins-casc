@@ -1,4 +1,5 @@
 jenkins:
+  numExecutors: 1
   securityRealm:
     local:
       allowsSignup: false
@@ -19,7 +20,7 @@ jenkins:
         - "Overall/Read:authenticated"
         - "Run/Replay:dev"
         - "Run/Update:dev"
-  numExecutors: 1
+  
 
 # Setting up Agent 
   nodes:
@@ -30,7 +31,7 @@ jenkins:
         numExecutors: 1
         remoteFS: "/home/ubuntu/jenkins_agent1"
         launcher:
-          SSHLauncher:
+          ssh:
             host: '<prod1_ip>'
             port: 22
             credentialsId: ssh-Jenkins-Controller
@@ -47,7 +48,7 @@ jenkins:
         numExecutors: 1
         remoteFS: "/home/ubuntu/jenkins_agent2"
         launcher:
-          SSHLauncher:
+          ssh:
             host: '<prod2_ip>'
             port: 22
             credentialsId: ssh-Jenkins-Controller
@@ -57,6 +58,13 @@ jenkins:
             sshHostKeyVerificationStrategy:
               manuallyTrustedKeyVerificationStrategy:
                 requireInitialManualTrust: false
+## Testing this block
+
+unclassified:
+  location:
+    adminAddress: "mail.gabriel.pollak@gmail.com"
+    url: "CONTROLLER_IP"
+## End block
 
 # Set up credentials
 credentials:
@@ -86,4 +94,5 @@ credentials:
               secretKey: "${AWS_SECRET_ACCESS_KEY}"
               description: "AWS Credentials"
 jobs:
-  - file: /var/jenkins_home/pipelines/*.groovy
+  - file: /var/jenkins_home/pipelines/aws-test.groovy
+  - file: /var/jenkins_home/pipelines/aws-deploy.groovy
