@@ -36,7 +36,6 @@ pipelineJob('AWS-Deploy') {
                                         sudo docker stop my-app-deployed
                                         sudo docker rm -f my-app-deployed
                                         sudo docker image rm my-app
-                                        ' 
                                     """
                                 } catch (err) { // Just incase it is the first run, catching the error or any others that might happen.
                                     echo "There might have been an error stopping/removing the container/image..."
