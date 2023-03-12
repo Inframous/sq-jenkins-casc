@@ -61,7 +61,7 @@ pipelineJob('AWS-Deploy') {
                         // deleting the csv file.
                         steps {
                             withAWS(credentials: 'aws-Jenkins-Controller', region: 'eu-central-1') {
-                                sh '''
+                                sh \'\'\'
                                     wget https://"${AWS_BUCKET_NAME}".s3.eu-central-1.amazonaws.com/report.csv
                                     input=\$(tail -n 1 report.csv) 
                                     TestId="\$((\$(wc report.csv -l | awk '{ print \$1 }') - 1))"
@@ -77,7 +77,7 @@ pipelineJob('AWS-Deploy') {
                                     '{"TestId": {"S": "'\$TestId'"}, "TestDate": {"S": "'\$TestDate'"}, "TestResult": {"S": "'\$TestResult'"}, "TestUser": {"S": "'\$TestUser'"}}' \
                                     --return-consumed-capacity TOTAL
                                     rm report.csv
-                                '''
+                                \'\'\'
                             }
                         }
                     }
