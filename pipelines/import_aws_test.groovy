@@ -1,4 +1,4 @@
-pipelineJob('AWS-Test') {
+pipelineJob('Import-AWS-Test') {
     definition {
         cps {
         script('''\

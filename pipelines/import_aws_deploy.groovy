@@ -1,4 +1,4 @@
-pipelineJob('AWS-Deploy') {
+pipelineJob('Import-AWS-Deploy') {
     definition {
         cps {
         script('''\
