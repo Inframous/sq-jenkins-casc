@@ -19,13 +19,13 @@ pipelineJob('AWS-Deploy') {
                     stage('Checkout SCM'){
                         steps {
                             checkout([
-                                $class: 'GitSCM',
-                                branches: [[name: 'main']],
-                                userRemoteConfigs : [[
-                                    url: "${GIT_REPO_URL_SSH}",
-                                    credentialsId: "${GIT_SSH_CREDENTIALS}"
-                                    ]]
-                                ])
+                            $class: 'GitSCM',
+                            branches: [[name: 'main']],
+                            userRemoteConfigs : [[
+                                url: "${GIT_REPO_URL_SSH}",
+                                credentialsId: "${GIT_SSH_CREDENTIALS}"
+                                ]]
+                            ])
                         }
                     }
                     stage('Deploying App!') {

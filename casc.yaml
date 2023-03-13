@@ -94,5 +94,5 @@ credentials:
               secretKey: "${AWS_SECRET_ACCESS_KEY}"
               description: "AWS Credentials"
 jobs:
-  - file: /var/jenkins_home/pipelines/aws-test.groovy
-  - file: /var/jenkins_home/pipelines/aws-deploy.groovy
+  - file: /var/jenkins_home/pipelines/import_aws_test.groovy
+  - file: /var/jenkins_home/pipelines/import_aws_deploy.groovy
