@@ -8,7 +8,7 @@ pipelineJob('AWS-Test') {
                     stage('Generate Job') {
                         steps {
                             jobDsl(
-                                scriptText: '''
+                                scriptText: \'\'\'
                                     pipelineJob('AWS-Test') {
                                         definition {
                                             cpsScm {
@@ -26,7 +26,7 @@ pipelineJob('AWS-Test') {
                                             }
                                         }
                                     }
-                                '''
+                                \'\'\'
                             )
                         }
                     }

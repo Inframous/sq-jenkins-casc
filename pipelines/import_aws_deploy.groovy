@@ -8,7 +8,7 @@ pipelineJob('AWS-Deploy') {
                     stage('Generate Job') {
                         steps {
                             jobDsl(
-                                scriptText: '''
+                                scriptText: \'\'\'
                                     pipelineJob('AWS-Deploy') {
                                         definition {
                                             cpsScm {
@@ -26,7 +26,7 @@ pipelineJob('AWS-Deploy') {
                                             }
                                         }
                                     }
-                                '''
+                                \'\'\'
                             )
                         }
                     }
