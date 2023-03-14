@@ -1,4 +1,5 @@
 jenkins:
+  systemMessage: "Welcome to your new Jenkins Controller, ejnoy!"
   numExecutors: 1
   securityRealm:
     local:
@@ -8,19 +9,27 @@ jenkins:
           password: "admin"
         - id: "dev"
           password: "dev"
-  # authorizationStrategy: loggedInUsersCanDoAnything
+        - id: "dev2"
+          password: "dev2"
+
+
   authorizationStrategy:
-    globalMatrix:
-      permissions:
-        - "Job/Build:dev"
-        - "Job/Cancel:dev"
-        - "Job/Read:dev"
-        - "Job/Workspace:dev"
-        - "Overall/Administer:admin"
-        - "Overall/Read:authenticated"
-        - "Run/Replay:dev"
-        - "Run/Update:dev"
-  
+    roleBased:
+      roles:
+        global:
+          - name: "admin"
+            description: "Jenkins administrators"
+            permissions:
+              - "Overall/Administer"
+            assignments:
+              - "admin"
+          - name: "readonly"
+            description: "Read-only users"
+            permissions:
+              - "Overall/Read"
+              - "Job/Read"
+            assignments:
+              - "authenticated"
 
 # Setting up Agent 
   nodes:
@@ -63,7 +72,8 @@ jenkins:
 unclassified:
   location:
     adminAddress: "EMAIL_ADDRESS"
-    url: "CONTROLLER_IP"
+    url: "http://10.5.5.77:5050"
+
 ## End block
 security:
   scriptApproval:
