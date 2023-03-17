@@ -1,6 +1,10 @@
 jenkins:
+<<<<<<< HEAD
   systemMessage: "Welcome to your new Jenkins Controller, ejnoy!"
   numExecutors: 1
+=======
+  numExecutors: 0
+>>>>>>> f8fbde3 (Added J_Agent)
   securityRealm:
     local:
       allowsSignup: false
@@ -67,6 +71,23 @@ jenkins:
             sshHostKeyVerificationStrategy:
               manuallyTrustedKeyVerificationStrategy:
                 requireInitialManualTrust: false
+    - permanent:
+        labelString: "J_Agent"
+        mode: NORMAL
+        name: "J_Agent"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/jenkins_agent3"
+        launcher:
+          ssh:
+            host: '<j_agent_ip>'
+            port: 22
+            credentialsId: ssh-Jenkins-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
 ## Testing this block
 
 unclassified:
@@ -112,3 +133,4 @@ credentials:
 jobs:
   - file: /var/jenkins_home/pipelines/import_aws_test.groovy
   - file: /var/jenkins_home/pipelines/import_aws_deploy.groovy
+
