@@ -1,10 +1,6 @@
 jenkins:
-<<<<<<< HEAD
   systemMessage: "Welcome to your new Jenkins Controller, ejnoy!"
-  numExecutors: 1
-=======
   numExecutors: 0
->>>>>>> f8fbde3 (Added J_Agent)
   securityRealm:
     local:
       allowsSignup: false
@@ -38,7 +34,7 @@ jenkins:
 # Setting up Agent 
   nodes:
     - permanent:
-        labelString: "Prod1 all Prod"
+        labelString: "Prod1 Prod"
         mode: NORMAL
         name: "Prod1"
         numExecutors: 1
@@ -55,7 +51,7 @@ jenkins:
               manuallyTrustedKeyVerificationStrategy:
                 requireInitialManualTrust: false
     - permanent:
-        labelString: "Prod2 all Prod"
+        labelString: "Prod2 Prod"
         mode: NORMAL
         name: "Prod2"
         numExecutors: 1
