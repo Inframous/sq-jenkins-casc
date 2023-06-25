@@ -92,24 +92,6 @@ jenkins:
               manuallyTrustedKeyVerificationStrategy:
                 requireInitialManualTrust: false
 
-
-## Testing this block
-
-unclassified:
-  location:
-    adminAddress: "EMAIL_ADDRESS"
-    url: "<CONTROLLER_IP>"
-
-## End block
-security:
-  scriptApproval:
-    approvedScriptHashes:
-      - "SHA512:4b9b98be2b95adc41e51a9da66fbac96eed3f92877a0633c12f9049ce68e2c1d67e3fe6aa0985a6dd5c233ba447c2e246a972860d762b6b246f958e8d850c340"
-      - "SHA512:1fc3571ba10dc8f4f0294a299adb5f23c40c042cdfd0c4f82c583d8d37c6da8d8d73b40722b084d8c8a9be648116e3efba1f5a0520f807d1c3f2d1a622686e15"
-
-
-
-
 # Set up credentials
 credentials:
   system:
@@ -138,8 +120,21 @@ credentials:
               secretKey: "${AWS_SECRET_ACCESS_KEY}"
               description: "AWS Credentials"
 
+# Testing this block
+unclassified:
+  location:
+    adminAddress: "EMAIL_ADDRESS"
+    url: "<CONTROLLER_IP>"
+## End block
+
 
 jobs:
   - file: /usr/share/jenkins/casc_files/pipelines/import_depInfra.groovy
   - file: /usr/share/jenkins/casc_files/pipelines/import_desInfra.groovy
+
+# security:
+#   scriptApproval:
+#     approvedScriptHashes:
+#       - "SHA512:4b9b98be2b95adc41e51a9da66fbac96eed3f92877a0633c12f9049ce68e2c1d67e3fe6aa0985a6dd5c233ba447c2e246a972860d762b6b246f958e8d850c340"
+#       - "SHA512:1fc3571ba10dc8f4f0294a299adb5f23c40c042cdfd0c4f82c583d8d37c6da8d8d73b40722b084d8c8a9be648116e3efba1f5a0520f807d1c3f2d1a622686e15"
 
