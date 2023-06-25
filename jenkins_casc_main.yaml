@@ -94,8 +94,8 @@ unclassified:
 ## End block
 
 jobs:
-  - file: /usr/share/jenkins/casc_files/pipelines/import_depInfra.groovy
-  - file: /usr/share/jenkins/casc_files/pipelines/import_desInfra.groovy
+  - file: /var/jenkins_home/pipelines/import_depInfra.groovy
+  - file: /var/jenkins_home/pipelines/import_desInfra.groovy
 
 security:
   scriptApproval:
