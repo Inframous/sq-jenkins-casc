@@ -11,6 +11,9 @@ jenkins:
           password: "password"
         - id: "dev2"
           password: "password"
+  agentProtocols:
+    ssh:
+      sshHostKeyVerificationStrategy: none
 
   authorizationStrategy:
     roleBased:
