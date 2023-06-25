@@ -41,48 +41,14 @@ jenkins:
 # Setting up Agents 
   nodes:
     - permanent:
-        labelString: "Prod1 prod"
+        labelString: "Master_Agent master_agent"
         mode: NORMAL
-        name: "Prod1"
-        numExecutors: 1
-        remoteFS: "/home/ubuntu/agent_prod1"
-        launcher:
-          ssh:
-            host: '<prod1_ip>'
-            port: 22
-            credentialsId: ssh-Master-Controller
-            launchTimeoutSeconds: 60
-            maxNumRetries: 3
-            retryWaitTime: 30
-            sshHostKeyVerificationStrategy:
-              manuallyTrustedKeyVerificationStrategy:
-                requireInitialManualTrust: false
-    - permanent:
-        labelString: "Prod2 prod"
-        mode: NORMAL
-        name: "Prod2"
-        numExecutors: 1
-        remoteFS: "/home/ubuntu/agent_prod2"
-        launcher:
-          ssh:
-            host: '<prod2_ip>'
-            port: 22
-            credentialsId: ssh-Master-Controller
-            launchTimeoutSeconds: 60
-            maxNumRetries: 3
-            retryWaitTime: 30
-            sshHostKeyVerificationStrategy:
-              manuallyTrustedKeyVerificationStrategy:
-                requireInitialManualTrust: false
-    - permanent:
-        labelString: "J_Agent j_agent"
-        mode: NORMAL
-        name: "J_Agent"
+        name: "Master_Agent"
         numExecutors: 1
         remoteFS: "/home/ubuntu/j_agent"
         launcher:
           ssh:
-            host: '<j_agnet_ip>'
+            host: '172.31.5.6'
             port: 22
             credentialsId: ssh-Master-Controller
             launchTimeoutSeconds: 60
@@ -126,7 +92,6 @@ unclassified:
     adminAddress: "EMAIL_ADDRESS"
     url: "<CONTROLLER_IP>"
 ## End block
-
 
 jobs:
   - file: /usr/share/jenkins/casc_files/pipelines/import_depInfra.groovy
