@@ -3,12 +3,12 @@ services:
   jenkins:
     image: jen-casc:latest
     privileged: true
-    user: jenkins
+    user: root
     ports:
       - 8080:8080
       - 50000:50000
     container_name: jen-casc
     restart: always
     volumes:
-      # - /home/ubuntu/jenkins_home:/var/jenkins_home
+      - /home/ubuntu/jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
