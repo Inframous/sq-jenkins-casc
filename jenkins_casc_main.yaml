@@ -101,13 +101,13 @@ unclassified:
     url: "<CONTROLLER_IP>"
 
 ## End block
-# security:
-#   scriptApproval:
-#     approvedScriptHashes:
-#       - "SHA512:0cf3430139e8d280232f356f64171afffb6a4cce1486ae3aece20ed748554b31d8c8ea9d2247280960f4fd5a53e273bb7adb2cb8654bfcccaadb61070163e240"
-#       - "SHA512:24f5af3b48d6a02f7e162197f2e8164f06a2bb89e1ca1a9d362488a89a9d734d035373233df096bbc4e3df984fb6480456cf276524df0314041ee852402b8b8c"
-#       - "SHA512:86512ed881cbddbdb546fd5e99ceeda8299b2a0627d8e0ad547fa74794268e0d89abc50f67d7d632d399b5fd86862084aff6c1850dd3dc0bdf3bfd6ef5b4731b"
-#       - "SHA512:ed718c448d1be96c84caa9599738951150029310a0cc41b6c6e668cf2abcaeae2bc134e0021333599c283cb82ddbe41aad74728ebd49699daab6549989f5b47f"
+security:
+  scriptApproval:
+    approvedScriptHashes:
+      - "SHA512:4b9b98be2b95adc41e51a9da66fbac96eed3f92877a0633c12f9049ce68e2c1d67e3fe6aa0985a6dd5c233ba447c2e246a972860d762b6b246f958e8d850c340"
+      - "SHA512:1fc3571ba10dc8f4f0294a299adb5f23c40c042cdfd0c4f82c583d8d37c6da8d8d73b40722b084d8c8a9be648116e3efba1f5a0520f807d1c3f2d1a622686e15"
+
+
 
 # Set up credentials
 credentials:
