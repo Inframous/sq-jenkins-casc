@@ -91,10 +91,7 @@ unclassified:
   location:
     adminAddress: "EMAIL_ADDRESS"
     url: "<CONTROLLER_IP>"
-  git:
-    globalConfigName: "inframous"
-    globalConfigEmail: "mail.gabriel.pollak@gmail.com"
-    disableHostKeyVerification: false
+
 ## End block
 
 jobs:
@@ -102,6 +99,8 @@ jobs:
   - file: /var/jenkins_home/pipelines/import_desInfra.groovy
 
 security:
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "noVerificationVerificationStrategy"
   scriptApproval:
     approvedScriptHashes:
       - "SHA512:8d233a53968bc6331e19c54d2256cc89800862f4fa65d725a975c12cddc139f4e137975e681e6f172146969402b0f8faae0b10f45b13eb183b3153bc58631a08"
