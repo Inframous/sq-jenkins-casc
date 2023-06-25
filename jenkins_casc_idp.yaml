@@ -1,0 +1,193 @@
+jenkins:
+  systemMessage: "Welcome to your new Jenkins Controller, ejnoy!"
+  numExecutors: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "password"
+        - id: "dev"
+          password: "password"
+        - id: "dev2"
+          password: "password"
+
+  authorizationStrategy:
+    roleBased:
+      roles:
+        global:
+          - name: "admin"
+            description: "Jenkins administrators"
+            permissions:
+              - "Overall/Administer"
+            assignments:
+              - "admin"
+          - name: "Authenticated_Devs"
+            description: "Authenticated Devs"
+            permissions:
+              - "Overall/Read"
+              - "Job/Read"
+              - "Job/Configure"
+              - "Job/Build"
+              - "Job/Workspace"
+              - "Agent/Build"
+              - "Agent/Connect"
+              - "Agent/Build"
+              - "Agent/Disconnect"
+
+            assignments:
+              - "authenticated"
+
+# Setting up Agents 
+  nodes:
+    - permanent:
+        labelString: "Prod1 prod"
+        mode: NORMAL
+        name: "Prod1"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/agent_prod1"
+        launcher:
+          ssh:
+            host: '<prod1_ip>'
+            port: 22
+            credentialsId: ssh-Jenkins-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+    - permanent:
+        labelString: "Prod2 prod"
+        mode: NORMAL
+        name: "Prod2"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/agent_prod2"
+        launcher:
+          ssh:
+            host: '<prod2_ip>'
+            port: 22
+            credentialsId: ssh-Jenkins-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+    - permanent:
+        labelString: "vpc"
+        mode: NORMAL
+        name: "VPC_Agent"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/agent_vpc"
+        launcher:
+          ssh:
+            host: '172.31.5.10'
+            port: 22
+            credentialsId: ssh-Jenkins-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+    - permanent:
+        labelString: "ec2"
+        mode: NORMAL
+        name: "EC2_Agent"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/agent_ec2"
+        launcher:
+          ssh:
+            host: '172.31.5.11'
+            port: 22
+            credentialsId: ssh-Jenkins-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+    - permanent:
+        labelString: "s3"
+        mode: NORMAL
+        name: "S3_Agent"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/agent_s3"
+        launcher:
+          ssh:
+            host: '172.31.5.12'
+            port: 22
+            credentialsId: ssh-Jenkins-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+    - permanent:
+        labelString: "dynamodb"
+        mode: NORMAL
+        name: "DYNAMO_Agent"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/dynamo"
+        launcher:
+          ssh:
+            host: '172.31.5.13'
+            port: 22
+            credentialsId: ssh-Jenkins-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+## Testing this block
+
+unclassified:
+  location:
+    adminAddress: "EMAIL_ADDRESS"
+    url: "<CONTROLLER_IP>"
+
+## End block
+# security:
+#   scriptApproval:
+#     approvedScriptHashes:
+#       - "SHA512:0cf3430139e8d280232f356f64171afffb6a4cce1486ae3aece20ed748554b31d8c8ea9d2247280960f4fd5a53e273bb7adb2cb8654bfcccaadb61070163e240"
+#       - "SHA512:24f5af3b48d6a02f7e162197f2e8164f06a2bb89e1ca1a9d362488a89a9d734d035373233df096bbc4e3df984fb6480456cf276524df0314041ee852402b8b8c"
+#       - "SHA512:86512ed881cbddbdb546fd5e99ceeda8299b2a0627d8e0ad547fa74794268e0d89abc50f67d7d632d399b5fd86862084aff6c1850dd3dc0bdf3bfd6ef5b4731b"
+#       - "SHA512:ed718c448d1be96c84caa9599738951150029310a0cc41b6c6e668cf2abcaeae2bc134e0021333599c283cb82ddbe41aad74728ebd49699daab6549989f5b47f"
+
+# Set up credentials
+# credentials:
+#   system:
+#     domainCredentials:
+#       - credentials:
+#           - basicSSHUserPrivateKey:
+#               scope: GLOBAL
+#               id: "ssh-Jenkins-Controller"
+#               username: ubuntu
+#               description: "SSH passphrase with private key file. Private key provided"
+#               privateKeySource:
+#                 directEntry:
+#                   privateKey: "${readFile:${SSH_PRIVATE_FILE_PATH}}"
+#           - basicSSHUserPrivateKey:
+#               scope: GLOBAL
+#               id: "ssh-GitHub"
+#               username: Inframous
+#               description: "SSH Private Key for Git (Same one)"
+#               privateKeySource:
+#                 directEntry:
+#                   privateKey: "${readFile:${SSH_PRIVATE_FILE_PATH}}"
+#           - aws:
+#               scope: GLOBAL
+#               id: "aws-Jenkins-Controller"
+#               accessKey: "${AWS_ACCESS_KEY}"
+#               secretKey: "${AWS_SECRET_ACCESS_KEY}"
+#               description: "AWS Credentials"
+
+
+# jobs:
+#   - file: /var/jenkins_home/pipelines/import_aws_test.groovy
+#   - file: /var/jenkins_home/pipelines/import_aws_deploy.groovy
+

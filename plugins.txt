@@ -106,4 +106,4 @@ workflow-job:latest
 email-ext:latest
 configuration-as-code:latest
 authorize-project:latest
-
+docker-workflow:latest
