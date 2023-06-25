@@ -10,5 +10,5 @@ services:
     container_name: jen-casc
     restart: always
     volumes:
-      - /home/ubuntu/jenkins_home:/var/jenkins_home
+      # - /home/ubuntu/jenkins_home:/var/jenkins_home
       - /var/run/docker.sock:/var/run/docker.sock
