@@ -138,7 +138,7 @@ credentials:
               description: "AWS Credentials"
 
 
-# jobs:
+jobs:
   - file: /var/jenkins_home/pipelines/import_depInfra.groovy
   - file: /var/jenkins_home/pipelines/import_desInfra.groovy
 
