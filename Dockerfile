@@ -11,6 +11,6 @@ COPY --chown=jenkins:jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
 COPY --chown=jenkins:jenkins master-controller /usr/share/jenkins/casc_files/.ssh/keys/master-controller
 
 RUN jenkins-plugin-cli -f /usr/share/jenkins/ref/plugins.txt
-
 COPY jenkins_casc_main.yaml /usr/share/jenkins/casc_files/jenkins_casc_main.yaml
+USER jenkins
 
