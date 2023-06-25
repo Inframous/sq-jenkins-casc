@@ -11,10 +11,6 @@ jenkins:
           password: "password"
         - id: "dev2"
           password: "password"
-  remoting:
-    enabled: true
-    security:
-      strict-host-key-checking: false
 
   authorizationStrategy:
     roleBased:
@@ -95,6 +91,10 @@ unclassified:
   location:
     adminAddress: "EMAIL_ADDRESS"
     url: "<CONTROLLER_IP>"
+  git:
+    globalConfigName: "inframous"
+    globalConfigEmail: "mail.gabriel.pollak@gmail.com"
+    disableHostKeyVerification: false
 ## End block
 
 jobs:
