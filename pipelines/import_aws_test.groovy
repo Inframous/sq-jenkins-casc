@@ -15,13 +15,13 @@ pipelineJob('Import-AWS-Test') {
                                                 scm {
                                                     git {
                                                         remote {
-                                                            url('git@github.com:Inframous/project_1.git')
+                                                            url('git@github.com:Inframous/sq-pj1-app.git')
                                                             credentials('ssh-GitHub')
                                                         }
                                                         branch('main')
                                                     }
                                                 }
-                                                scriptPath('infrastructure/pipeline/aws-test-done')
+                                                scriptPath('pipelines/aws-test')
                                                 
                                             }
                                         }

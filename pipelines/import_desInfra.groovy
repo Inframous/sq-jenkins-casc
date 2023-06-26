@@ -21,7 +21,7 @@ pipelineJob('Import-awsDestroyInfra') {
                                                         branch('main')
                                                     }
                                                 }
-                                                scriptPath('extra_code/pipeline-jobs/awsDestroyContainers')
+                                                scriptPath('pipeline-jobs/awsDestroyContainers')
                                                 
                                             }
                                         }

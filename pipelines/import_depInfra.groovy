@@ -21,7 +21,7 @@ pipelineJob('Import-awsDeployInfra') {
                                                         branch('main')
                                                     }
                                                 }
-                                                scriptPath('extra_code/pipeline-jobs/awsDeployContainers')
+                                                scriptPath('pipeline-jobs/awsDeployContainers')
                                                 
                                             }
                                         }
