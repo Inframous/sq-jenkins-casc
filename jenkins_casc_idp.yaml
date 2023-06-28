@@ -1,5 +1,5 @@
 jenkins:
-  systemMessage: "Welcome to your new Jenkins Controller, ejnoy!"
+  systemMessage: "Welcome to Jenkins-IDP (sq-Project-2), you may import the jobs."
   numExecutors: 0
   securityRealm:
     local:
@@ -48,7 +48,7 @@ jenkins:
         remoteFS: "/home/ubuntu/j_agent"
         launcher:
           ssh:
-            host: '10.0.0.1'
+            host: '10.0.0.11'
             port: 22
             credentialsId: ssh-Master-Controller
             launchTimeoutSeconds: 60
@@ -65,7 +65,7 @@ jenkins:
         remoteFS: "/home/ubuntu/idp_agent"
         launcher:
           ssh:
-            host: '10.0.0.2'
+            host: '10.0.0.12'
             port: 22
             credentialsId: ssh-Master-Controller
             launchTimeoutSeconds: 60
@@ -82,7 +82,7 @@ jenkins:
         remoteFS: "/home/ubuntu/prod1_agent"
         launcher:
           ssh:
-            host: '10.0.0.3'
+            host: '10.0.0.13'
             port: 22
             credentialsId: ssh-Master-Controller
             launchTimeoutSeconds: 60
@@ -99,7 +99,7 @@ jenkins:
         remoteFS: "/home/ubuntu/prod2_agent"
         launcher:
           ssh:
-            host: '10.0.0.4'
+            host: '10.0.0.14'
             port: 22
             credentialsId: ssh-Master-Controller
             launchTimeoutSeconds: 60
@@ -151,10 +151,10 @@ jobs:
 security:
   gitHostKeyVerificationConfiguration:
     sshHostKeyVerificationStrategy: "AcceptFirstConnectionStrategy"
-  scriptApproval:
-    approvedScriptHashes:
-      - "SHA512:2403ede9db3751c6b8e6b1f67825920bb906beefbfdfe8035b89bf374fefc8db2d29ef8946a489a70e45485d52af21f6d39c90255e76720d5c484d7d016d61b7"
-      - "SHA512:1b6c00e4a114776c5acf92ea71dfe23dfbf4010ad0cc15131cd70d782fefe38e7d6561bc8673c8d92188374b17fb7fe569398a85a276a1c5926b1ce570e72879"
+  # scriptApproval:
+  #   approvedScriptHashes:
+  #     - "SHA512:2403ede9db3751c6b8e6b1f67825920bb906beefbfdfe8035b89bf374fefc8db2d29ef8946a489a70e45485d52af21f6d39c90255e76720d5c484d7d016d61b7"
+  #     - "SHA512:1b6c00e4a114776c5acf92ea71dfe23dfbf4010ad0cc15131cd70d782fefe38e7d6561bc8673c8d92188374b17fb7fe569398a85a276a1c5926b1ce570e72879"
 
 
 
