@@ -107,3 +107,5 @@ email-ext:latest
 configuration-as-code:latest
 authorize-project:latest
 docker-workflow:latest
+ansible:latest
+groovy-postbuild:latest
