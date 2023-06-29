@@ -21,7 +21,7 @@ pipelineJob('Import-AWS-Test') {
                                                         branch('main')
                                                     }
                                                 }
-                                                scriptPath('pipeline-job/aws-test')
+                                                scriptPath('pipeline-job/aws-test-pj3')
                                                 
                                             }
                                         }

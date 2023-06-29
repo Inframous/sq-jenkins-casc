@@ -1,4 +1,4 @@
-pipelineJob('Import-AWS-Deploy') {
+pipelineJob('Import-deploy-IDP') {
     definition {
         cps {
         script('''\
@@ -9,19 +9,19 @@ pipelineJob('Import-AWS-Deploy') {
                         steps {
                             jobDsl(
                                 scriptText: \'\'\'
-                                    pipelineJob('AWS-Deploy') {
+                                    pipelineJob('sq-pj3-Deploy-IDP') {
                                         definition {
                                             cpsScm {
                                                 scm {
                                                     git {
                                                         remote {
-                                                            url('git@github.com:Inframous/sq-pj3-infra.git')
+                                                            url('git@github.com:Inframous/sq-pj3-infra')
                                                             credentials('ssh-GitHub')
                                                         }
                                                         branch('main')
                                                     }
                                                 }
-                                                scriptPath('pipeline-jobs/aws-deploy-pj3')
+                                                scriptPath('pipeline-jobs/configureInfra')
                                                 
                                             }
                                         }
