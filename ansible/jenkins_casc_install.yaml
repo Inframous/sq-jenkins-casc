@@ -49,10 +49,11 @@
       shell: |
         chmod 666 /var/run/docker.sock
     - name: "Building and Deploying The Container"
+      become: true
       shell: |
         cd ~/sq-jenkins-casc
-        sudo docker build -t "jen-casc:latest" .
-        sudo docker compose up -d
+        docker build -t "jen-casc:latest" .
+        docker compose up -d
     # - name: Creating SSH Folder (.ssh) inside the Container.
     #   shell: |
     #     sudo docker exec -i jen-casc mkdir -p /root/.ssh/
