@@ -44,12 +44,12 @@
         path: ~/sq-jenkins-casc/jenkins_casc_main.yaml
         regexp: 'EMAIL_ADDRESS'
         replace: "{{ gitEmail }}"
-    - name: Change file ownership, group and permissions to /var/run/docker.sock'
-      ansible.builtin.file:
-        path: /var/run/docker.sock
-        owner: root
-        group: docker
-        mode: '0666'
+    # - name: Change file ownership, group and permissions to /var/run/docker.sock'
+    #   ansible.builtin.file:
+    #     path: /var/run/docker.sock
+    #     owner: root
+    #     group: docker
+    #     mode: '0666'
     - name: "Building and Deploying The Container"
       shell: |
         cd ~/sq-jenkins-casc
