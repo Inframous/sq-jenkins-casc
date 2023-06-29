@@ -85,6 +85,12 @@ credentials:
               accessKey: '<aws_access_key_id>'
               secretKey: '<aws_secret_access_key>'
               description: "AWS Credentials"
+          - usernamePassword:
+              description: "Docker Hub Credentials"
+              id: "docker-Creds"
+              password: "{AQAAABAAAAAQsDoXzJLqaulZiT5a+CeA9RYpukhIinCccxtWQ0yk2ug=}"
+              scope: GLOBAL
+              username: "inframous"
 
 # Testing this block
 unclassified:

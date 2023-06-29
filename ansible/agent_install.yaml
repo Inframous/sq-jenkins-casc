@@ -8,6 +8,11 @@
         name:
           - default-jre
         update_cache: yes
+    - name: Install pip
+      apt:
+        name:
+          - python3-pip
+        update_cache: yes
     - name: Install AWS CLI
       shell: | 
         sudo apt install unzip
