@@ -44,16 +44,16 @@
         path: ~/sq-jenkins-casc/jenkins_casc_main.yaml
         regexp: 'EMAIL_ADDRESS'
         replace: "{{ gitEmail }}"
-    - name: "Setting docker daemon permissions"
+    - name: Set file permissions (docker.sock)
+      file:
+        path: /var/run/docker.sock
+        mode: "0666"  # Specify the desired file permissions
       become: true
-      shell: |
-        chmod 666 /var/run/docker.sock
     - name: "Building and Deploying The Container"
-      become: true
       shell: |
         cd ~/sq-jenkins-casc
-        docker build -t "jen-casc:latest" .
-        docker compose up -d
+        sudo docker build -t "jen-casc:latest" .
+        sudo docker compose up -d
     # - name: Creating SSH Folder (.ssh) inside the Container.
     #   shell: |
     #     sudo docker exec -i jen-casc mkdir -p /root/.ssh/
