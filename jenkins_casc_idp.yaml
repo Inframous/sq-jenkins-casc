@@ -132,8 +132,8 @@ credentials:
           - aws:
               scope: GLOBAL
               id: "aws-Master-Controller"
-              accessKey: "${AWS_ACCESS_KEY}"
-              secretKey: "${AWS_SECRET_ACCESS_KEY}"
+              accessKey: '<aws_access_key_id>'
+              secretKey: '<aws_secret_access_key>'
               description: "AWS Credentials"
 
 # Testing this block
