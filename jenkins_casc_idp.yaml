@@ -138,7 +138,7 @@ credentials:
           - usernamePassword:
               description: "Docker Hub Credentials"
               id: "docker-Creds"
-              password: "<dockerPassowrd>"
+              password: "<dockerPassword>"
               scope: GLOBAL
               username: "inframous"
 
