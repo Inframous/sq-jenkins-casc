@@ -155,14 +155,14 @@ jobs:
   - file: /var/jenkins_home/pipelines/import_aws_deploy.groovy
 
 security:
-  gitHostKeyVerificationConfiguration:
-    sshHostKeyVerificationStrategy: "AcceptFirstConnectionStrategy"
   scriptApproval:
     approvedScriptHashes:
       - "SHA512:2136d0138adba0ce7394fdf67d9857844bc34d141f25c16933d081468164df87d314a91db8d914ef606403569f51b61b4c393c4a6de32777c655fa8bc6141a9d"
       - "SHA512:23034d969bedf61a0a09a0b4e0304566a62c2eb2234eeeffdfc2cdc8f863d6c6b432b80e5b534b4173ea80148a7e768402f4c49fc55f1437b9ef37e8476af80d"
       - "SHA512:af0299e9f1123d52e22a4d008f8402cca619d18739605bcfa9f8dceada55dcf5b0dea645c8f4f8b80740f4717e4656b53a0247d754eed68a995d1f14dc28d787"
       - "SHA512:cda28663dafed7bb271b4dc31061335fab0034287f6e16f048529dc2ad886a8e32de090ecc7e0bbc2b1dee2a60286865951bdcdc7432ab3c1fda16bbbd9c5fee"
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "AcceptFirstConnectionStrategy"
 
 
 
