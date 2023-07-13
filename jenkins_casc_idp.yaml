@@ -108,6 +108,23 @@ jenkins:
             sshHostKeyVerificationStrategy:
               manuallyTrustedKeyVerificationStrategy:
                 requireInitialManualTrust: false
+    - permanent:
+        labelString: "Monitoring monitoring"
+        mode: NORMAL
+        name: "Prod2"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/monitoring_agent"
+        launcher:
+          ssh:
+            host: '10.0.0.15'
+            port: 22
+            credentialsId: ssh-Master-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
 
 credentials:
   system:

@@ -20,8 +20,8 @@ jenkins:
             description: "Jenkins administrators"
             permissions:
               - "Overall/Administer"
-            assignments:
-              - "admin"
+            entries:
+              - user: "admin"
           - name: "Authenticated_Devs"
             description: "Authenticated Devs"
             permissions:
@@ -35,8 +35,9 @@ jenkins:
               - "Agent/Build"
               - "Agent/Disconnect"
 
-            assignments:
-              - "authenticated"
+            entries:
+              - user: "dev"
+              - user: "dev2"
 
 # Setting up Agents 
   nodes:
@@ -45,7 +46,7 @@ jenkins:
         mode: NORMAL
         name: "Master_Agent"
         numExecutors: 1
-        remoteFS: "/home/ubuntu/j_agent"
+        remoteFS: "/home/ubuntu/master_agent"
         launcher:
           ssh:
             host: '172.31.5.6'
