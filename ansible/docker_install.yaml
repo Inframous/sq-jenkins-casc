@@ -29,3 +29,7 @@
       ansible.builtin.service:
         name: docker
         state: started
+    - name: "Setting docker daemon permissions"
+      become: true
+      shell: |
+        chmod 666 /var/run/docker.sock

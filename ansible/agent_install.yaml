@@ -19,10 +19,6 @@
         curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" 
         unzip awscliv2.zip
         sudo ./aws/install
-    - name: "Setting docker daemon permissions"
-      become: true
-      shell: |
-        chmod 666 /var/run/docker.sock
     - name: Adding GitHub Fingerprint
       become: false
       shell: |
