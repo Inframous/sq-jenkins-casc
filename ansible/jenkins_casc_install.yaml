@@ -1,6 +1,6 @@
 ---
 - name: Custom Jenkins Install
-  hosts: HOSTS
+  hosts: {{ HOSTS }}
   vars:
     - gitEmail: "will be populated by bash script"
     - CONTROLLER_IP: "will be populated by bash script"
