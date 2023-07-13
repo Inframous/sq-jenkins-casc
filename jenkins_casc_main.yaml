@@ -104,7 +104,6 @@ unclassified:
 jobs:
   - file: /var/jenkins_home/pipelines/import_depInfra.groovy
   - file: /var/jenkins_home/pipelines/import_desInfra.groovy
-  - file: /var/jenkins_home/pipelines/import_depIDP.groovy
   - file: /var/jenkins_home/pipelines/import_configureInfra.groovy
 
 security:
