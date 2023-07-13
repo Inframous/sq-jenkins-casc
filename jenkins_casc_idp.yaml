@@ -34,7 +34,6 @@ jenkins:
               - "Agent/Connect"
               - "Agent/Build"
               - "Agent/Disconnect"
-
             assignments:
               - "authenticated"
 
