@@ -132,8 +132,8 @@ credentials:
           - aws:
               scope: GLOBAL
               id: "aws-Master-Controller"
-              accessKey: '<aws_access_key_id>'
-              secretKey: '<aws_secret_access_key>'
+              accessKey: "${AWS_ACCESS_KEY}"
+              secretKey: "${AWS_SECRET_ACCESS_KEY}"
               description: "AWS Credentials"
           - usernamePassword:
               description: "Docker Hub Credentials"
