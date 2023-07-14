@@ -1,5 +1,5 @@
 jenkins:
-  systemMessage: "Welcome to your new Jenkins Controller, ejnoy!"
+  systemMessage: "Jenkins Master Controller"
   numExecutors: 0
   securityRealm:
     local:

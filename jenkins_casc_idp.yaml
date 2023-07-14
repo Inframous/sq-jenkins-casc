@@ -1,5 +1,5 @@
 jenkins:
-  systemMessage: "Welcome to Jenkins-IDP (sq-Project-2), you may import the jobs."
+  systemMessage: "Jenkins IDP - For Devs"
   numExecutors: 0
   securityRealm:
     local:
