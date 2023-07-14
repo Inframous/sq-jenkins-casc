@@ -111,7 +111,7 @@ jenkins:
     - permanent:
         labelString: "Monitoring monitoring"
         mode: NORMAL
-        name: "Prod2"
+        name: "Monitoring"
         numExecutors: 1
         remoteFS: "/home/ubuntu/monitoring_agent"
         launcher:

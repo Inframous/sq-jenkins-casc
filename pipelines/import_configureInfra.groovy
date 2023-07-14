@@ -1,4 +1,4 @@
-pipelineJob('Import-deploy-IDP') {
+pipelineJob('Import-configureInfra') {
     definition {
         cps {
         script('''\
@@ -9,7 +9,7 @@ pipelineJob('Import-deploy-IDP') {
                         steps {
                             jobDsl(
                                 scriptText: \'\'\'
-                                    pipelineJob('sq-pj3-Deploy-IDP') {
+                                    pipelineJob('sq-pj3-configureInfra') {
                                         definition {
                                             cpsScm {
                                                 scm {
