@@ -135,7 +135,7 @@ unclassified:
 
 jobs:
   - file: /var/jenkins_home/pipelines/import_aws_test.groovy
-
+  - file: /var/jenkins_home/pipelines/import_eks_deploy.groovy
   - file: /var/jenkins_home/pipelines/import_depIDP.groovy
 
 
