@@ -1,0 +1,153 @@
+jenkins:
+  systemMessage: "Jenkins IDP - SQ-PJ4"
+  numExecutors: 0
+  securityRealm:
+    local:
+      allowsSignup: false
+      users:
+        - id: "admin"
+          password: "password"
+        - id: "dev"
+          password: "password"
+        - id: "dev2"
+          password: "password"
+
+  authorizationStrategy:
+    roleBased:
+      roles:
+        global:
+          - name: "admin"
+            description: "Jenkins administrators"
+            permissions:
+              - "Overall/Administer"
+            entries:
+              - user: "admin"
+          - name: "Authenticated_Devs"
+            description: "Authenticated Devs"
+            permissions:
+              - "Overall/Read"
+              - "Job/Read"
+              - "Job/Configure"
+              - "Job/Build"
+              - "Job/Workspace"
+              - "Agent/Build"
+              - "Agent/Connect"
+              - "Agent/Build"
+              - "Agent/Disconnect"
+            entries:
+              - user: "dev"
+              - user: "dev2"
+
+# Setting up Agents 
+  nodes:
+    - permanent:
+        labelString: 'J_Agent j_agent'
+        mode: NORMAL
+        name: "J_Agent"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/j_agent"
+        launcher:
+          ssh:
+            host: '10.0.0.11'
+            port: 22
+            credentialsId: ssh-Master-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+    - permanent:
+        labelString: "IDP idp"
+        mode: NORMAL
+        name: "IDP"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/idp_agent"
+        launcher:
+          ssh:
+            host: '10.0.0.12'
+            port: 22
+            credentialsId: ssh-Master-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+    - permanent:
+        labelString: "Monitoring monitoring"
+        mode: NORMAL
+        name: "Monitoring"
+        numExecutors: 1
+        remoteFS: "/home/ubuntu/monitoring_agent"
+        launcher:
+          ssh:
+            host: '10.0.0.15'
+            port: 22
+            credentialsId: ssh-Master-Controller
+            launchTimeoutSeconds: 60
+            maxNumRetries: 3
+            retryWaitTime: 30
+            sshHostKeyVerificationStrategy:
+              manuallyTrustedKeyVerificationStrategy:
+                requireInitialManualTrust: false
+
+credentials:
+  system:
+    domainCredentials:
+      - credentials:
+          - basicSSHUserPrivateKey:
+              scope: GLOBAL
+              id: "ssh-Master-Controller"
+              username: ubuntu
+              description: "SSH passphrase with private key file. Private key provided"
+              privateKeySource:
+                directEntry:
+                  privateKey: "${readFile:${SSH_PRIVATE_FILE_PATH}}"
+          - basicSSHUserPrivateKey:
+              scope: GLOBAL
+              id: "ssh-GitHub"
+              username: Inframous
+              description: "SSH Private Key for Git (Same one)"
+              privateKeySource:
+                directEntry:
+                  privateKey: "${readFile:${SSH_PRIVATE_FILE_PATH}}"
+          - aws:
+              scope: GLOBAL
+              id: "aws-Master-Controller"
+              accessKey: "${AWS_ACCESS_KEY}"
+              secretKey: "${AWS_SECRET_ACCESS_KEY}"
+              description: "AWS Credentials"
+          - usernamePassword:
+              description: "Docker Hub Credentials"
+              id: "docker-Creds"
+              password: "<dockerPassword>"
+              scope: GLOBAL
+              username: "inframous"
+
+# Testing this block
+unclassified:
+  location:
+    adminAddress: "EMAIL_ADDRESS"
+    url: "<CONTROLLER_IP>"
+
+## End block
+
+jobs:
+  - file: /var/jenkins_home/pipelines/import_aws_test.groovy
+
+  - file: /var/jenkins_home/pipelines/import_depIDP.groovy
+
+
+security:
+  gitHostKeyVerificationConfiguration:
+    sshHostKeyVerificationStrategy: "AcceptFirstConnectionStrategy"
+  # scriptApproval:
+  #   approvedScriptHashes:
+  #     - "SHA512:2136d0138adba0ce7394fdf67d9857844bc34d141f25c16933d081468164df87d314a91db8d914ef606403569f51b61b4c393c4a6de32777c655fa8bc6141a9d"
+  #     - "SHA512:23034d969bedf61a0a09a0b4e0304566a62c2eb2234eeeffdfc2cdc8f863d6c6b432b80e5b534b4173ea80148a7e768402f4c49fc55f1437b9ef37e8476af80d"
+  #     - "SHA512:860b8b79b3902661c8c86834e9573fa41623016a71712e14eb63b76b3c27282d278301b4b554a327544f879c2a744ee51e6dcd2983dba9e1de0a8d302cbeac3f"
+  #     - "SHA512:af0299e9f1123d52e22a4d008f8402cca619d18739605bcfa9f8dceada55dcf5b0dea645c8f4f8b80740f4717e4656b53a0247d754eed68a995d1f14dc28d787"
+  #     - "SHA512:beb6f9958f0181bc0e31bf52506ea47f9a71abd7cef5df658d36a2bbd7be995f519f1c12270efe37b6c6d60451361885b715f78c0bd613ea9f7ccc46c3195ed2"
+  #     - "SHA512:cda28663dafed7bb271b4dc31061335fab0034287f6e16f048529dc2ad886a8e32de090ecc7e0bbc2b1dee2a60286865951bdcdc7432ab3c1fda16bbbd9c5fee"
+
