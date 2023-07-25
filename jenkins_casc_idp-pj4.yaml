@@ -82,7 +82,7 @@ jenkins:
         remoteFS: "/home/ubuntu/monitoring_agent"
         launcher:
           ssh:
-            host: '10.0.0.15'
+            host: '10.0.0.13'
             port: 22
             credentialsId: ssh-Master-Controller
             launchTimeoutSeconds: 60
