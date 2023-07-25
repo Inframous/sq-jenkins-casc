@@ -15,7 +15,7 @@ pipelineJob('Import-AWS-Test') {
                                                 scm {
                                                     git {
                                                         remote {
-                                                            url('git@github.com:Inframous/sq-pj4-eks')
+                                                            url('git@github.com:Inframous/sq-pj4-infra')
                                                             credentials('ssh-GitHub')
                                                         }
                                                         branch('main')
