@@ -1,4 +1,4 @@
-pipelineJob('Import-AWS-Deploy') {
+pipelineJob('Import-AWS-Test') {
     definition {
         cps {
         script('''\
@@ -9,19 +9,19 @@ pipelineJob('Import-AWS-Deploy') {
                         steps {
                             jobDsl(
                                 scriptText: \'\'\'
-                                    pipelineJob('EKS-Deploy') {
+                                    pipelineJob('AWS-Test') {
                                         definition {
                                             cpsScm {
                                                 scm {
                                                     git {
                                                         remote {
-                                                            url('git@github.com:Inframous/sq-pj4-eks.git')
+                                                            url('git@github.com:Inframous/sq-pj1-app')
                                                             credentials('ssh-GitHub')
                                                         }
                                                         branch('main')
                                                     }
                                                 }
-                                                scriptPath('pipeline-jobs/eks-deploy')
+                                                scriptPath('pipelines/sq-pj4-eks/aws-test-pj4')
                                                 
                                             }
                                         }

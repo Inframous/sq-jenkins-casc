@@ -168,9 +168,9 @@ unclassified:
 ## End block
 
 jobs:
-  - file: /var/jenkins_home/pipelines/import_aws_test.groovy
-  - file: /var/jenkins_home/pipelines/import_aws_deploy.groovy
-  - file: /var/jenkins_home/pipelines/import_depIDP.groovy
+  - file: /var/jenkins_home/pipelines/sq-pj3-ec2/import_aws_test.groovy
+  - file: /var/jenkins_home/pipelines/sq-pj3-ec2/import_aws_deploy.groovy
+  - file: /var/jenkins_home/pipelines/sq-pj3-ec2/import_depIDP.groovy
 
 
 security:
