@@ -15,13 +15,13 @@ pipelineJob('Import-deploy-IDP') {
                                                 scm {
                                                     git {
                                                         remote {
-                                                            url('git@github.com:Inframous/sq-pj1-app')
+                                                            url('git@github.com:Inframous/sq-pj2-idp')
                                                             credentials('ssh-GitHub')
                                                         }
                                                         branch('main')
                                                     }
                                                 }
-                                                scriptPath('pipelines/sq-pj4-eks/deploy-idp')
+                                                scriptPath('pipelines/sq-pj4-eks/Jenkinsfile')
                                                 
                                             }
                                         }
