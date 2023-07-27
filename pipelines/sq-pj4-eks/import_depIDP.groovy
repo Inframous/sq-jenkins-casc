@@ -10,6 +10,9 @@ pipelineJob('Import-deploy-IDP') {
                             jobDsl(
                                 scriptText: \'\'\'
                                     pipelineJob('Deploy-IDP') {
+                                        triggers {
+                                            githubPush()
+                                        }
                                         definition {
                                             cpsScm {
                                                 scm {

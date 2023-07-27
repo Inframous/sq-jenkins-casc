@@ -10,6 +10,9 @@ pipelineJob('Import-AWS-Test') {
                             jobDsl(
                                 scriptText: \'\'\'
                                     pipelineJob('AWS-Test') {
+                                        triggers {
+                                            githubPush()
+                                        }
                                         definition {
                                             cpsScm {
                                                 scm {
