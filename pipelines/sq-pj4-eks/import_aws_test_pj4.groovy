@@ -1,6 +1,7 @@
 pipelineJob('Import-AWS-Test') {
     definition {
         cps {
+        sandbox()
         script('''\
             pipeline {
                 agent any
