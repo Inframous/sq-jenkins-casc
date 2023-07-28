@@ -27,6 +27,7 @@ jenkins:
             permissions:
               - "Overall/Read"
               - "Job/Read"
+              - "Job/Create"
               - "Job/Configure"
               - "Job/Build"
               - "Job/Workspace"
